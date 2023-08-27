@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-server-deployment
+spec:
+  replicas: 1   # Adjust the number of replicas as per your requirement
+  selector:
+    matchLabels:
+      app: django-server
+  template:
+    metadata:
+      labels:
+        app: django-server
+    spec:
+      containers:
+      - name: django-server
+        image: your-dockerhub-username/django-server:latest  # Replace with your actual Docker Hub image name
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DJANGO_SECRET_KEY
+          value: "your-secret-key-here"  # Replace with your Django secret key
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-server-service
+spec:
+  selector:
+    app: django-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: LoadBalancer  # Change this to "NodePort" if you are using a local Kubernetes cluster
