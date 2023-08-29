@@ -10,13 +10,13 @@ def processreqfx(request):
 
         # Define the XML schema for validation
         schema = '''
-       <bridge:ReqFx xmlns:bridge="http://npci.org/bridge/schema/">
-    <Head ver="2.0" ts="" orgId="" msgId="" prodType= "BRIDGE"/>
+       <bridge:ReqFx xmlns:bridge="http://mock.org/sample/schema/">
+    <Head ver="2.0" ts="" orgId="" msgId="" prodType= "sample"/>
     <Txn id="" type="ReqFx" dealtSide="BUY" note="" refId="" refUrl=""/>
     <Fx remBankId="" beneBankId="" tenor="TODAY|TOM|SPOT|1D|1W|1M|2M|3M|4M|5M|6M|9M|1Y" validity="">
         <Amount fxProvId="" fsbId="" fCyAmount="" baseCurr="" targetCurr=""/>
     </Fx>
-</bridge:ReqFx>
+</sample:ReqFx>
         '''
 
         # Parse the XML and validate against the schema
@@ -26,8 +26,8 @@ def processreqfx(request):
         # Process the validated XML request
         response_xml = """
             <!-- For Fx Provider -->
-            <bridge:RespFx xmlns:bridge="http://npci.org/bridge/schema/">
-                <Head ver="1.0|2.0" ts="" orgId="" msgId="" prodType="BRIDGE"/>
+            <sample:RespFx xmlns:sample="http://mock.org/sample/schema/">
+                <Head ver="1.0|2.0" ts="" orgId="" msgId="" prodType="sample"/>
                 <Txn id="" note="" refId="" refUrl="" type="Fx" />
                 <Resp reqMsgId="" result="SUCCESS" errCode=""/>
                 <Amount fsbId="" fxProvId="" baseCurr="" fCyAmount="" targetCurr="" fxRate="" uniQuotesId="" valEndTs="">
@@ -35,7 +35,7 @@ def processreqfx(request):
                     <Fee name="FXPROV" value="" currency="LCy" valEndTs=""/>
                     <!-- currency = Currency code -->
                 </Amount>
-            </bridge:RespFx>
+            </sample:RespFx>
         """
         return HttpResponse(response_xml, content_type="text/xml")
 
